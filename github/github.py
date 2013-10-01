@@ -2,7 +2,7 @@ from trac.core import *
 from trac.config import Option, IntOption, ListOption, BoolOption
 from trac.web.api import IRequestFilter, IRequestHandler, Href
 from trac.util.translation import _
-from trac.web.api import parse_query_string
+from urlparse import parse_qs
 
 from hook import CommitHook
 
@@ -108,7 +108,7 @@ class GithubPlugin(Component):
             status = 'closed'
 
         data = req.args.get('payload')
-        branches = (parse_query_string(req.query_string).get('branches') or self.branches).split(',')
+        branches = (parse_qs(req.query_string).get('branches') or self.branches).split(',')
         self.env.log.debug("Using branches: %s", branches)
 
         if data:
